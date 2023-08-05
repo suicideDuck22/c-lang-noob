@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:15.0
+    restart: always
+    environment:
+      - POSTGRES_USER=dummy
+      - POSTGRES_PASSWORD=dummy123
+      - POSTGRES_DB=dummy
+    ports:
+      - '5432:5432'
