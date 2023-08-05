@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 int main(){
     FILE *fptr;
@@ -12,24 +13,46 @@ int main(){
         exit(1);
     }
 
-    int lines[20];
+    int sum = 0;
+    int minor = 0;
+    int major = 0;
 
-    int max_line_size = 100;
-    char line[max_line_size];
+    int maxLineSize = 100;
+    char line[maxLineSize];
 
     int index = 0;
-    while(fgets(line, max_line_size, fptr)){
-        if(strlen(line) == 0){
-            printf("EMPTY LINE FOUNDED AT INDEX %d", index + 1);
+    while(fgets(line, maxLineSize, fptr)){
+        bool isLineEmpty = line[0] == '\n';
+        if(isLineEmpty == true){
+            continue;
         }
 
-        lines[index] = atoi(line);
-        index++;
+        int intLine = atoi(line);
+        
+        if(intLine > major){
+            major = intLine;
+        }
 
-        printf("%s", line);
+        sum += intLine;
+
+        if(index == 0){
+            minor = intLine;
+            index++;
+            continue;
+        }
+
+        if(intLine < minor){
+            minor = intLine;
+        }
+
+        index++;
     }
 
+    double average = sum / (index + 1);
 
-
+    printf("Major number: %d\n", major);
+    printf("Minor number: %d\n", minor);
+    printf("Sum of the numbers: %d\n", sum);
+    printf("Average: %.2f\n", average);
     return 0;
 }
