@@ -4,8 +4,8 @@ services:
     image: postgres:15.0
     restart: always
     environment:
-      - POSTGRES_USER=dummy
-      - POSTGRES_PASSWORD=dummy123
+      - POSTGRES_USER=renas
+      - POSTGRES_PASSWORD=renas123
       - POSTGRES_DB=dummy
     ports:
       - '5432:5432'

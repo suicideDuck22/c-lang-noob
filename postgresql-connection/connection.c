@@ -1,12 +1,10 @@
-#include <stdio.h>
+#include <stdlib.h>
 
 #include "headers/postgres.h"
 #include "headers/types.h"
 
 #include "libpq/libpq-fe.h"
 #include "libpq/postgres_ext.h"
-#include <string.h>
-#include <stdlib.h>
 
 PGconn *GetConnection(struct ConnData connData){
     char connQuery[125];

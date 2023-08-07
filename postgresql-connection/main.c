@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "headers/postgres.h"
 #include "headers/types.h"
+
 #include "libpq/libpq-fe.h"
 #include "libpq/postgres_ext.h"
-#include <string.h>
-#include <stdlib.h>
 
 int main(){
     PGresult *res;
