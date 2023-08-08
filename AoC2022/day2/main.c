@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int main(){
     FILE *fptr;
@@ -17,22 +18,26 @@ int main(){
     int index = 0;
 
     while(fgets(line, max_line_size, fptr)){
-        if(index == 1){
-            break;
+        bool isBreakLine = line[0] == '\n';
+        if(isBreakLine){
+            continue;
         }
 
-        printf("%s", &line[0]);
+        printf("Line: %s\n", line);
 
-        char oponnent_play[1];
-        strcpy(oponnent_play, (char *)&line[0]);
+        char *oponnent_play = malloc(1);
+        strcpy(oponnent_play, &line[0]);
 
-        char my_play[1];
-        strcpy(my_play, (char *)&line[2]);
+        char *my_play = malloc(1);
+        strcpy(my_play, &line[2]);
 
-        printf("Opponent play: %s\n", oponnent_play);
-        printf("My play: %s\n\n", my_play);
+        printf("Opponent play: %c\n", *oponnent_play);
+        printf("My play: %c\n\n", *my_play);
 
         index++;
+
+        free(oponnent_play);
+        free(my_play);
     }
 
     return 0;
