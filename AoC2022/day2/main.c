@@ -3,15 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-int get_my_throw_point(char throw[1]){
-    char *my_plays[] = {"X", "Y", "Z"};
-    for(int i = 0; i <= sizeof(my_plays[0]); i++){
-        if(strcmp(throw, my_plays[i]) == 0){
-            return i + 1;
-        }
-    }
-}
-
 // A - X = PEDRA - PEDRA = EMPATE = 3;
 // A - Y = PEDRA - PAPEL = GANHOU = 6;
 // A - Z = PEDRA - TESOURA = PERDEU = 0;
@@ -24,26 +15,36 @@ int get_my_throw_point(char throw[1]){
 // C - Y = TESOURA - PAPEL = PERDEU = 0;
 // C - Z = TESOURA - TESOURA = EMPATE = 3;
 
-int get_play_point(char play[3]){
-    char *possible_plays[] = {
-        "A X", "A Y", "A Z",
-        "B X", "B Y", "B Z",
-        "C X", "C Y", "C Z"
-    };
-
-    int results_points[] = {
-        3, 6, 0,
-        0, 3, 6,
-        6, 0, 3
-    };
-
-    for(int i = 0; i <= sizeof(possible_plays[0]); i++){
-        if(strcmp(play, possible_plays[i]) == 0){
-            return results_points[i];
+int get_my_throw_point(char throw[1]){
+    char *my_plays[] = {"X", "Y", "Z"};
+    for(int i = 0; i <= sizeof(my_plays[0]); i++){
+        if(strcmp(throw, my_plays[i]) == 0){
+            return i + 1;
         }
     }
+}
 
-    printf("Not found: %s\n", play);
+char *get_my_throw(char elf_code[1], char opponent_play[1],char need[4]){
+    char *opponent[] = {"A", "B", "C"};
+
+    char *to_won[] = {"Y", "Z", "X"};
+    char *to_draw[] = {"X", "Y", "Z"};
+    char *to_lose[] = {"Z", "X", "Y"};
+
+    for(int i = 0; i <= sizeof(opponent[0]); i++){
+        printf("%d", i);
+        if(strcmp(opponent_play, opponent[i]) == 0){
+            
+            if(strcmp(need, "LOSE") == 0){
+                return to_lose[i];
+            } else if(strcmp(need, "WON") == 0){
+                return to_won[i];
+            } else {
+                return to_draw[i];
+            }
+
+        }
+    }
 }
 
 int main(){
@@ -56,12 +57,12 @@ int main(){
         exit(1);
     }
 
+    int final_result = 0;
+    char *elf_code = malloc(1);
+    char *opponent_play = malloc(1);
     char *my_play = malloc(1);
 
-    int index = 0;
-
     int max_line_size = 4;
-    int final_result = 0;
     char line[max_line_size];
 
     while(fgets(line, max_line_size, fptr)){
@@ -70,9 +71,24 @@ int main(){
             continue;
         }
 
-        strcpy(my_play, &line[2]);
+        printf("%s", &line);
 
-        int result_point = get_play_point(line);
+        int result_point = 0;
+
+        strcpy(opponent_play, &line[0]);
+        strcpy(elf_code, &line[2]);
+
+        if(strcmp(elf_code, "X") == 0){
+            strcpy(my_play, get_my_throw(elf_code, opponent_play, "LOSE"));
+            result_point = 0;
+        } else if(strcmp(elf_code, "Z") == 0){
+            strcpy(my_play, get_my_throw(elf_code, opponent_play, "WON"));
+            result_point = 6;
+        } else {
+            strcpy(my_play, get_my_throw(elf_code, opponent_play, "DRAW"));
+            result_point = 3;
+        }
+
         int throw_point = get_my_throw_point(my_play);
 
         final_result += result_point + throw_point;
@@ -80,7 +96,10 @@ int main(){
 
     printf("Final result: %d", final_result);
 
+    free(opponent_play);
+    free(elf_code);
     free(my_play);
+
     fclose(fptr);
     return 0;
 }
