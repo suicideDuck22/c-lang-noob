@@ -25,6 +25,7 @@ int get_my_throw_point(char throw[1]){
 }
 
 char *get_my_throw(char elf_code[1], char opponent_play[1],char need[4]){
+    printf("Na function: %s\n", opponent_play);
     char *opponent[] = {"A", "B", "C"};
 
     char *to_won[] = {"Y", "Z", "X"};
@@ -32,7 +33,6 @@ char *get_my_throw(char elf_code[1], char opponent_play[1],char need[4]){
     char *to_lose[] = {"Z", "X", "Y"};
 
     for(int i = 0; i <= sizeof(opponent[0]); i++){
-        printf("%d", i);
         if(strcmp(opponent_play, opponent[i]) == 0){
             
             if(strcmp(need, "LOSE") == 0){
@@ -42,9 +42,10 @@ char *get_my_throw(char elf_code[1], char opponent_play[1],char need[4]){
             } else {
                 return to_draw[i];
             }
-
         }
     }
+
+    return NULL;
 }
 
 int main(){
@@ -58,8 +59,6 @@ int main(){
     }
 
     int final_result = 0;
-    char *elf_code = malloc(1);
-    char *opponent_play = malloc(1);
     char *my_play = malloc(1);
 
     int max_line_size = 4;
@@ -71,21 +70,21 @@ int main(){
             continue;
         }
 
-        printf("%s", &line);
-
         int result_point = 0;
 
-        strcpy(opponent_play, &line[0]);
-        strcpy(elf_code, &line[2]);
+        char opponent_play = line[0];
+        char elf_code = line[2];
 
-        if(strcmp(elf_code, "X") == 0){
-            strcpy(my_play, get_my_throw(elf_code, opponent_play, "LOSE"));
+        printf("Aqui: %c\n", &opponent_play);
+
+        if(strcmp(&elf_code, "X") == 0){
+            strcpy(my_play, get_my_throw(&elf_code, &opponent_play, "LOSE"));
             result_point = 0;
-        } else if(strcmp(elf_code, "Z") == 0){
-            strcpy(my_play, get_my_throw(elf_code, opponent_play, "WON"));
+        } else if(strcmp(&elf_code, "Z") == 0){
+            strcpy(my_play, get_my_throw(&elf_code, &opponent_play, "WON"));
             result_point = 6;
         } else {
-            strcpy(my_play, get_my_throw(elf_code, opponent_play, "DRAW"));
+            strcpy(my_play, get_my_throw(&elf_code, &opponent_play, "DRAW"));
             result_point = 3;
         }
 
@@ -95,9 +94,6 @@ int main(){
     }
 
     printf("Final result: %d", final_result);
-
-    free(opponent_play);
-    free(elf_code);
     free(my_play);
 
     fclose(fptr);
